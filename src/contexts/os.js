@@ -37,19 +37,15 @@ export const useOSStore = create((set) => ({
   minimizeApp: (id) => {
     set((state) => ({
       ...state,
-      windows: state.windows.map(i => ({
-        ...i,
-        minimized: i.id === id
-      }))
+      windows: state.windows.map(i => (
+        i.id === id ? {...i, minimized: true} : i))
     }))
   },
   restoreApp: (id) => {
     set((state) => ({
       ...state,
-      windows: state.windows.map(i => ({
-        ...i,
-        minimized: false
-      }))
+      windows: state.windows.map(i => (
+        i.id === id ? {...i, minimized: false} : i))
     }))
   }
 }));

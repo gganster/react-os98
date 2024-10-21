@@ -3,9 +3,12 @@ import { motion, useDragControls } from 'framer-motion';
 import { useOSStore } from '../../contexts/os';
 
 const DraggableResizableWindow = ({ wm_state, children }) => {
+  const windows = useOSStore((state) => state.windows);
   const closeApp = useOSStore((state) => state.closeApp);
   const minimizeApp = useOSStore((state) => state.minimizeApp);
   const restoreApp = useOSStore((state) => state.restoreApp);
+
+  const currentWindow = windows.find((window) => window.id === wm_state.id);
 
   const [size, setSize] = useState({ width: 300, height: 200 });
 
@@ -51,42 +54,50 @@ const DraggableResizableWindow = ({ wm_state, children }) => {
   return (
     <>
       <motion.div
-        className="window absolute border"
+        className="window absolute border overflow-hidden"
         drag
         dragControls={dragControls}
         dragListener={false} // Désactive le listener de drag par défaut
         dragMomentum={false}
-        style={{ width: size.width, height: size.height }}
+        style={{
+          width: currentWindow.minimized ? 0 : size.width,
+          height: currentWindow.minimized ? 0 : size.height,
+          display: currentWindow.minimized ? 'none' : 'block',
+        }}
       >
         {/* Barre de titre */}
-        <motion.div
-          className="title-bar"
-          onPointerDown={(e) => dragControls.start(e)} // Démarre le drag sur le parent
-        >
-          <div className="title-bar-text">{wm_state.name}</div>
-          <div className="title-bar-controls">
-            <button aria-label="Minimize" onClick={() => minimizeApp(wm_state.id)}></button>
-            <button aria-label="Maximize"></button>
-            <button aria-label="Close" onClick={() => closeApp(wm_state.id)}></button>
-          </div>
-        </motion.div>
+        {currentWindow.minimized ? null : (
+          <motion.div
+            className="title-bar"
+            onPointerDown={(e) => dragControls.start(e)} // Démarre le drag sur le parent
+          >
+            <div className="title-bar-text">{wm_state.name}</div>
+            <div className="title-bar-controls">
+              <button aria-label="Minimize" onClick={() => minimizeApp(wm_state.id)}></button>
+              <button aria-label="Maximize"></button>
+              <button aria-label="Close" onClick={() => closeApp(wm_state.id)}></button>
+            </div>
+          </motion.div>
+        )}
 
         {/* Contenu de la fenêtre */}
         {children({ size })}
 
         {/* Resizer */}
-        <div
-          className="resizer"
-          style={{
-            position: 'absolute',
-            width: 20,
-            height: 20,
-            bottom: 0,
-            right: 0,
-            cursor: 'se-resize',
-          }}
-          onPointerDown={handlePointerDown}
-        />
+        {currentWindow.minimized ? null : (
+          <div
+            className="resizer"
+            style={{
+              position: 'absolute',
+              width: 20,
+              height: 20,
+              bottom: 0,
+              right: 0,
+              cursor: 'se-resize',
+            }}
+            onPointerDown={handlePointerDown}
+          />
+        )}
       </motion.div>
     </>
   );

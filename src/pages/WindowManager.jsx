@@ -9,10 +9,11 @@ export default function WindowManager() {
   return (
     <div className="h-screen w-screen bg-[#23b0e6] overflow-hidden relative">
       <DesktopManager />
-      {windows.map((window) => (
-        <DraggableResizableWindow key={window.id} wm_state={window}>
-          {window.component}
-        </DraggableResizableWindow>
+      {windows
+        .map((window) => (
+          <DraggableResizableWindow key={window.id} wm_state={window}>
+            {window.component}
+          </DraggableResizableWindow>
       ))}
       <Taskbar />
     </div>
