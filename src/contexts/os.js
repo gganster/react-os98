@@ -6,13 +6,20 @@ export const useOSStore = create((set) => ({
 
   windows: [],
   appClick: (id) => {
-    set((state) => ({
-      ...state,
-      windows: state.windows.map(i => ({
-        ...i,
-        active: i.id === id
-      }))
-    }))
+    set(state => {
+      if (!state.windows.find(i => i.id === id)) return state;
+      let windows = state.windows.map(i => i.id === id ? {...i, active: true} : {...i, active: false});
+
+      //place the activated window on top
+      const activatedWindow = windows.find(i => i.id === id);
+      windows = windows.filter(i => i.id !== id);
+      windows.push(activatedWindow);
+
+      return ({
+        ...state,
+        windows
+      })
+    })
   },
   startApp: (app) => {
     set((state) => ({

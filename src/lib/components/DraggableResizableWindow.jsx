@@ -6,7 +6,7 @@ const DraggableResizableWindow = ({ wm_state, children }) => {
   const windows = useOSStore((state) => state.windows);
   const closeApp = useOSStore((state) => state.closeApp);
   const minimizeApp = useOSStore((state) => state.minimizeApp);
-  const restoreApp = useOSStore((state) => state.restoreApp);
+  const appClick = useOSStore((state) => state.appClick);
 
   const currentWindow = windows.find((window) => window.id === wm_state.id);
 
@@ -59,6 +59,7 @@ const DraggableResizableWindow = ({ wm_state, children }) => {
         dragControls={dragControls}
         dragListener={false} // Désactive le listener de drag par défaut
         dragMomentum={false}
+        onClick={() => appClick(wm_state.id)} 
         style={{
           width: currentWindow.minimized ? 0 : size.width,
           height: currentWindow.minimized ? 0 : size.height,
@@ -68,7 +69,7 @@ const DraggableResizableWindow = ({ wm_state, children }) => {
         {/* Barre de titre */}
         {currentWindow.minimized ? null : (
           <motion.div
-            className="title-bar"
+            className={"title-bar " + (currentWindow.active ? "" : "inactive")}
             onPointerDown={(e) => dragControls.start(e)} // Démarre le drag sur le parent
           >
             <div className="title-bar-text">{wm_state.name}</div>
