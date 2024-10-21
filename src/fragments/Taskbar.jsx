@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useOSStore } from '../contexts/os';
+import StartMenuManager from './StartMenuManager';
 
 const Taskbar = () => {
   const windows = useOSStore((state) => state.windows);
@@ -26,10 +27,7 @@ const Taskbar = () => {
   
   return (
     <div className="taskbar fixed bottom-0 left-0 w-full h-10 bg-gray-200 border-t border-gray-400 flex items-center">
-      <div className="start-button h-full px-2 flex items-center border-r border-gray-400 cursor-pointer">
-        <img src="/icons/start.png" alt="Démarrer" className="h-6 w-6 mr-2" />
-        <span className="text-sm font-bold">Démarrer</span>
-      </div>
+      <StartMenuManager />
 
       <div className="active-apps flex-1 h-full flex items-center px-2 overflow-hidden">
         {windows.map((window) => (
