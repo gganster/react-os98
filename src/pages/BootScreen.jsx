@@ -8,7 +8,7 @@ const BootScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       setBooting(false);
-    }, 12000);
+    }, 6000);
   }, [])
 
   return (
