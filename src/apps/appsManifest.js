@@ -1,3 +1,4 @@
+import Ie from "./Ie";
 import Minesweeper from "./MineSweeper";
 import Notepad from "./Notepad";
 
@@ -13,6 +14,14 @@ const apps = [
     defaultSize: {
       width: 350 * 0.7,
       height: 520 *0.7
+    }
+  }, {
+    name: "Internet Explorer",
+    icon: "/icons/internet-explorer-32x32.png",
+    component: Ie,
+    defaultSize: {
+      width: 800,
+      height: 500
     }
   }
 ]
