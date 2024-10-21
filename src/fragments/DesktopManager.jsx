@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import Manifest from "../apps/appsManifest";
+import { useOSStore } from "../contexts/os";
 
 const DesktopIcon = ({ app }) => {
+  const startApp = useOSStore((state) => state.startApp);
+
   const [clicked, setClicked] = useState(false);
   const iconRef = useRef(null);
 
   const onDoubleClick = () => {
     setClicked(false);
+    startApp(app);
   };
 
   const onClick = () => {
@@ -20,10 +24,8 @@ const DesktopIcon = ({ app }) => {
   };
 
   useEffect(() => {
-    // Ajouter l'écouteur d'événement lors du montage
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // Supprimer l'écouteur d'événement lors du démontage
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
@@ -32,7 +34,7 @@ const DesktopIcon = ({ app }) => {
     <div
       ref={iconRef}
       className={
-        "m-2 flex justify-center items-center flex-col max-w-[82px] " +
+        "m-2 flex justify-center items-center flex-col w-[82px] " +
         `p-2 cursor-pointer ` +
         (clicked ? "bg-[#007e7d]" : "")
       }
@@ -52,7 +54,7 @@ const DesktopIcon = ({ app }) => {
 
 const DesktopManager = () => {
   return (
-    <div className="h-full w-full flex flex-col justify-start items-start p-4">
+    <div className="flex flex-col justify-start items-start p-4 absolute">
       {Manifest.map((app, index) => (
         <DesktopIcon key={index} app={app} />
       ))}

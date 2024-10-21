@@ -5,13 +5,51 @@ export const useOSStore = create((set) => ({
   setBooting: (booting) => set({ booting }),
 
   windows: [],
-  startApp: () => {
-
+  appClick: (id) => {
+    set((state) => ({
+      ...state,
+      windows: state.windows.map(i => ({
+        ...i,
+        active: i.id === id
+      }))
+    }))
   },
-  closeApp: () => {
-
+  startApp: (app) => {
+    set((state) => ({
+      ...state,
+      windows: [
+        ...(state.windows.map(i => ({...i, active: false}))),
+        {
+          ...app,
+          id: Date.now(),
+          active: true,
+          minimized: false
+        }
+      ]
+    }))
   },
-  minimizeApp: () => {
-
+  closeApp: (id) => {
+    set((state) => ({
+      ...state,
+      windows: state.windows.filter(i => i.id !== id)
+    }))
   },
+  minimizeApp: (id) => {
+    set((state) => ({
+      ...state,
+      windows: state.windows.map(i => ({
+        ...i,
+        minimized: i.id === id
+      }))
+    }))
+  },
+  restoreApp: (id) => {
+    set((state) => ({
+      ...state,
+      windows: state.windows.map(i => ({
+        ...i,
+        minimized: false
+      }))
+    }))
+  }
 }));

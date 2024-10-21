@@ -1,7 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useDragControls } from 'framer-motion';
+import { useOSStore } from '../../contexts/os';
 
-const DraggableResizableWindow = ({ title, children }) => {
+const DraggableResizableWindow = ({ wm_state, children }) => {
+  const closeApp = useOSStore((state) => state.closeApp);
+  const minimizeApp = useOSStore((state) => state.minimizeApp);
+  const restoreApp = useOSStore((state) => state.restoreApp);
+
   const [size, setSize] = useState({ width: 300, height: 200 });
 
   const dragControls = useDragControls();
@@ -58,11 +63,11 @@ const DraggableResizableWindow = ({ title, children }) => {
           className="title-bar"
           onPointerDown={(e) => dragControls.start(e)} // Démarre le drag sur le parent
         >
-          <div className="title-bar-text">{title || 'Notepad'}</div>
+          <div className="title-bar-text">{wm_state.name}</div>
           <div className="title-bar-controls">
-            <button aria-label="Minimize"></button>
+            <button aria-label="Minimize" onClick={() => minimizeApp(wm_state.id)}></button>
             <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
+            <button aria-label="Close" onClick={() => closeApp(wm_state.id)}></button>
           </div>
         </motion.div>
 
