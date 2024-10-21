@@ -6,11 +6,9 @@ const BootScreen = () => {
   const setBooting = useOSStore((state) => state.setBooting);
 
   useEffect(() => {
-    setBooting(false); // Remove this line
-
     setTimeout(() => {
       setBooting(false);
-    }, 6000);
+    }, 12000);
   }, [])
 
   return (

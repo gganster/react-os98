@@ -1,4 +1,6 @@
-export default function Ie({size}) {
+import React from "react";
+
+function Ie({size}) {
   return (
     <>
         <div className="menu-bar ">
@@ -29,3 +31,5 @@ export default function Ie({size}) {
     </>
   )
 }
+
+export default Ie;
