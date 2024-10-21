@@ -10,7 +10,10 @@ const DraggableResizableWindow = ({ wm_state, children }) => {
 
   const currentWindow = windows.find((window) => window.id === wm_state.id);
 
-  const [size, setSize] = useState({ width: 300, height: 200 });
+  const [size, setSize] = useState({ 
+    width: wm_state?.defaultSize?.width ?? 300,
+    height: wm_state?.defaultSize?.height ?? 200 
+  });
 
   const dragControls = useDragControls();
 
